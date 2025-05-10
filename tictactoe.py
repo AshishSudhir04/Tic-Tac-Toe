@@ -22,6 +22,7 @@ winner = 0
 game_over = False
 
 
+
 #define colours
 green = (0, 255, 0)
 red = (255, 0, 0)
@@ -29,6 +30,14 @@ blue = (0, 0, 255)
 
 #define font
 font = pygame.font.SysFont(None,40)
+
+def reset_game():
+    global markers, player, winner, game_over
+    markers = [[0]*3 for _ in range(3)]
+    player = 1
+    winner = 0
+    game_over = False
+
 
 
 def draw_grid():
@@ -98,10 +107,14 @@ def check_winner():
 
     
 def draw_winner(winner):
-    win_text = "Player" + str(winner) + "wins!"
+    win_text = "Player  " + str(winner) + "wins!"
+    win_text2 = "Press R to Restart "
+    win_img2 = font.render(win_text2,True,blue)
     win_img = font.render(win_text, True, blue)
     pygame.draw.rect(screen,green,(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2-60, 200, 50))
+    pygame.draw.rect(screen,green,(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 110, 250, 50))
     screen.blit(win_img,(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50))
+    screen.blit(win_img2,(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 100))
 
 
 
@@ -123,6 +136,10 @@ while run:
         if i.type == pygame.QUIT:
             run = False
 
+            
+        if i.type == pygame.KEYDOWN and i.key == pygame.K_r:
+            reset_game()
+
 
         if game_over == False:
 
@@ -139,8 +156,9 @@ while run:
                     check_winner()
                     print(markers,"\n")
 
-        if game_over == True:
-            draw_winner(winner)
+    if game_over == True:
+        draw_winner(winner)
+
 
 
 
